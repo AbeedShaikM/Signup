@@ -32,20 +32,19 @@ app.post("/", function (req, res) {
         method: "POST",
         auth: "Abeed17:cc0018b8cf647036cf15a33f0cd2be3d-us14"
     }
+    var flag = 1;
     const request = https.request(url, options, function (response) {
         response.on("data", function (data) {
-            console.log(JSON.parse(data));
-            // response.send(Json.parse(data));
+            const resp = JSON.parse(data);
+            console.log(resp.error_count);
+            if(resp.error_count!=0) flag=0;
         })
     })
     request.write(jsonData);
     request.end();
+    if(flag===1) res.sendFile(__dirname+"/success.html");
+    else res.sendFile(__dirname+"/failure.html");
 })
 app.listen(3000, function () {
 
 })
-// 2bcc1112322ae9adaaa8e2ddf86fb84c-us10
-// 258800434fcd4600acaf20fefd70d9b5-us10
-// 258800434fcd4600acaf20fefd70d9b5-us10
-// 00fce3f3f6
-// cc0018b8cf647036cf15a33f0cd2be3d-us14
