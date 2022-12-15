@@ -27,23 +27,24 @@ app.post("/", function (req, res) {
         ]
     }
     const jsonData = JSON.stringify(data);
-    const url = "https://us14.api.mailchimp.com/3.0/lists/631fbe1ac2";
+    const url = "https://us13.api.mailchimp.com/3.0/lists/631fbe1ac2";
     const options = {
         method: "POST",
         auth: "Abeed17:cc0018b8cf647036cf15a33f0cd2be3d-us14"
     }
-    var flag = 1;
     const request = https.request(url, options, function (response) {
-        response.on("data", function (data) {
-            const resp = JSON.parse(data);
-            console.log(resp.error_count);
-            if(resp.error_count!=0) flag=0;
-        })
+        if (response.statusCode == 200) {
+            res.sendFile(__dirname + "/success.html");
+        }
+        else {
+            res.sendFile(__dirname + "/failure.html");
+        }
     })
     request.write(jsonData);
     request.end();
-    if(flag===1) res.sendFile(__dirname+"/success.html");
-    else res.sendFile(__dirname+"/failure.html");
+})
+app.post("/failure", function (req1, res1) {
+    res1.redirect("/");
 })
 app.listen(3000, function () {
 
